@@ -79,11 +79,35 @@ def get_info(exchange):
     global bond_own
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 10:
+    while count < 100:
         info = read_from_exchange(exchange)
         type = info["type"]
-        if type == "book":
+        if type == "trade":
             symbol = info["symbol"]
+            if symbol == "BOND":
+                price = info["price"]
+                bond.extend([price for i in range(info["size"])])
+            elif symbol == "VALBZ":
+                price = info["price"]
+                valbz.extend([price for i in range(info["size"])])
+            elif symbol == "VALE":
+                price = info["price"]
+                vale.extend([price for i in range(info["size"])])
+            elif symbol == "GS":
+                price = info["price"]
+                gs.extend([price for i in range(info["size"])])
+            elif symbol == "MS":
+                price = info["price"]
+                ms.extend([price for i in range(info["size"])])
+            elif symbol == "WFC":
+                price = info["price"]
+                wfc.extend([price for i in range(info["size"])])
+            elif symbol == "XLF":
+                price = info["price"]
+                xlf.extend([price for i in range(info["size"])])
+
+
+
             # if symbol == "BOND":
                 # print('bid prices')
                 # buy = info["buy"]
@@ -97,8 +121,52 @@ def get_info(exchange):
             print('order successful -------------')
 
         elif type == 'fill':
-            
-
+            symbol = info["symbol"]
+            dir = info["dir"]
+            if dir == "BUY":
+                if symbol == "BOND":
+                    bond_own += info["size"]
+                    pnl -= info["size"] * info["price"]
+                elif symbol == "VALBZ":
+                    valbz_own += info["size"]
+                    pnl -= info["size"] * info["price"]
+                elif symbol == "VALE":
+                    vale_own += info["size"]
+                    pnl -= info["size"] * info["price"]
+                elif symbol == "GS":
+                    gs_own += info["size"]
+                    pnl -= info["size"] * info["price"]
+                elif symbol == "MS":
+                    ms_own += info["size"]
+                    pnl -= info["size"] * info["price"]
+                elif symbol == "WFC":
+                    wfc_own += info["size"]
+                    pnl -= info["size"] * info["price"]
+                elif symbol == "XLF":
+                    xlf_own += info["size"]
+                    pnl -= info["size"] * info["price"]
+            else:
+                if symbol == "BOND":
+                    bond_own -= info["size"]
+                    pnl += info["size"] * info["price"]
+                elif symbol == "VALBZ":
+                    valbz_own -= info["size"]
+                    pnl += info["size"] * info["price"]
+                elif symbol == "VALE":
+                    vale_own -= info["size"]
+                    pnl += info["size"] * info["price"]
+                elif symbol == "GS":
+                    gs_own -= info["size"]
+                    pnl += info["size"] * info["price"]
+                elif symbol == "MS":
+                    ms_own -= info["size"]
+                    pnl += info["size"] * info["price"]
+                elif symbol == "WFC":
+                    wfc_own -= info["size"]
+                    pnl += info["size"] * info["price"]
+                elif symbol == "XLF":
+                    xlf_own -= info["size"]
+                    pnl += info["size"] * info["price"]
         elif type == "reject":
             print(info["error"])
             order_id = info['order_id']
@@ -107,7 +175,8 @@ def get_info(exchange):
             except:
                 bond_sell_orders.remove(order_id)
             print('Failed! Length of array of bonds: ', len(bond_buy_orders))
-
+        elif type == "out":
+            #this only gives us id so maybe just remove stocks from own lists when we call cancel???
         count += 1
 
 
@@ -125,6 +194,38 @@ def trade_bond(exchange):
         write_to_exchange(exchange, cur_sell_order)
 
 
+def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
+    #should decide which algorithms to call
+    #has access to arrays in main.py global
+    print('master')
+
+    #check if buying ETF or its constituents is a good idea
+    #NEED TO IMMEDIATELY convert and sell so we don't have to keep track of price at which we bought it
+    XLF_p = mean(XLF)
+    BOND_p = mean(BOND)
+    GS_p = mean(GS)
+    MS_p = mean(MS)
+    WFC_p = mean(WFC)
+    etf_strat = checkETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p)
+    if etf_strat == "buyxlf":
+        write_to_exchange(exchange, new_buy_order('XLF', XLF_p + 1, 100)[1]) #we need to think about how sell order works do i need to store the id??
+        write_to_exchange(exchange, new_convert_order('XLF', 'SELL', xlf_own // 10)[1])
+        write_to_exchange(exchange, new_sell_order('BOND', BOND_p - 1, bond_own)[1])
+        write_to_exchange(exchange, new_sell_order('GS', GS_p - 1, gs_own)[1])
+        write_to_exchange(exchange, new_sell_order('MS', MS_p - 1, ms_own)[1])
+        write_to_exchange(exchange, new_sell_order('WFC', WFC_p - 1, wfc_own)[1])
+    elif etf_strat == "buysum":
+        write_to_exchange(exchange, new_buy_order('BOND', BOND_p + 1, 30)[1])
+        write_to_exchange(exchange, new_buy_order('GS', GS_p + 1, 20)[1])
+        write_to_exchange(exchange, new_buy_order('MS', MS_p + 1, 30)[1])
+        write_to_exchange(exchange, new_buy_order('WFC', WFC_p + 1, 20)[1])
+        num_XLF_to_buy = min(bond_own / .3, gs_own / .2, ms_own / .3, wfc_own / .2) // 1
+        write_to_exchange(exchange, new_convert_order('XLF', 'BUY', num_XLF_to_buy)[1])
+        
+    elif etf+strat == "buynone":
+        print('dont do etf')
+
+    #check if selling ETF or its constituents
 
 
 
@@ -143,6 +244,14 @@ xlf = [] #.3 bond; .2 gs; .2 ms; .2 wfc  ;  100 per conversion
 bond_buy_orders = []
 bond_sell_orders = []
 bond_own = 0
+valbz_own = 0
+vale_own = 0
+gs_own = 0
+ms_own = 0
+wfc_own = 0
+xlf_own = 0
+
+pnl = 0
 
 def main():
     exchange = connect()

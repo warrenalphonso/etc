@@ -1,17 +1,20 @@
 def mean(list):
     return sum(list) / len(list)
 
-def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
-    #should decide which algorithms to call
-    #has access to arrays in main.py global
-    print('master')
-
-
 #pennying for trade bond
 def trade_bond(exchange):
     bond_buy.append(cur_order_id)
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
     write_to_exchange(exchange, new_sell_order('BOND', 1000, 10))
 
-def ETFArbitrage(exchange, XLF, BOND, GS, MS, WFC):
-    
+def checkETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p):
+    #need to implement prioritizing liquid one higher
+    xlf_minus_sum = XLF_p - (.3 * BOND_p + .2 * GS_p + .3 * MS_p + .2 * WFC_p)
+    if xlf_minus_sum > 20:
+        return "buyxlf"
+    elif xlf_minus_sum < 15:
+        return "buysum"
+    else:
+        return "buynone"
+
+def ETFArbitrage(exchange, XLF_p, BOND_p, GS_p, MS_p, WFC_p):
