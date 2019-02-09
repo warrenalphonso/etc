@@ -108,6 +108,7 @@ def get_info(exchange):
 def trade_bond(exchange):
     bond_buy.append(cur_order_id)
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
+    bond_buy.append(cur_order_id)
     write_to_exchange(exchange, new_sell_order('BOND', 1000, 10))
 
 
