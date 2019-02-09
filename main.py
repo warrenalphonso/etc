@@ -168,11 +168,12 @@ def get_info(exchange):
                 elif symbol == "XLF":
                     xlf_own -= info["size"]
                     pnl += info["size"] * info["price"]
-        elif type == "reject":
-            print(info["error"])
+        # elif type == "reject":
+            # print(info["error"])
             # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
         count += 1
     print("PNL:", pnl)
+    print("Num Bonds:", bond_own)
 
 
 def trade_bond(exchange):
