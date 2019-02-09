@@ -269,7 +269,7 @@ def main():
         get_info(exchange)
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
-            trade_bond(exchange)
+            master_trade(exchange)
         else:
             print('Need to reconnect because market probably restarted')
             reconnect()
