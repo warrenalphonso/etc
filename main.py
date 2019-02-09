@@ -100,6 +100,8 @@ def get_info(exchange):
 
         elif type == "reject":
             print(info["error"])
+            order_id = info['order_id']
+            bond_buy.remove(order_id)
             print('Failed! Length of array of bonds: ', len(bond_buy))
 
         count += 1
@@ -108,7 +110,6 @@ def get_info(exchange):
 def trade_bond(exchange):
     bond_buy.append(cur_order_id)
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
-    bond_buy.append(cur_order_id)
     write_to_exchange(exchange, new_sell_order('BOND', 1000, 10))
 
 
