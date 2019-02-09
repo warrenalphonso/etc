@@ -12,6 +12,7 @@ import socket
 import json
 import time
 from utils import *
+from test_algorithms import *
 
 # ~~~~~============== CONFIGURATION  ==============~~~~~
 # replace REPLACEME with your team name!
@@ -221,7 +222,7 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
         write_to_exchange(exchange, new_buy_order('WFC', WFC_p + 1, 20)[1])
         num_XLF_to_buy = min(bond_own / .3, gs_own / .2, ms_own / .3, wfc_own / .2) // 1
         write_to_exchange(exchange, new_convert_order('XLF', 'BUY', num_XLF_to_buy)[1])
-        
+
     elif etf+strat == "buynone":
         print('dont do etf')
 
