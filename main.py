@@ -84,16 +84,16 @@ def get_info(exchange):
         if type == "book":
             symbol = info["symbol"]
             if symbol == "BOND":
-                print('bid prices')
-                buy = info["buy"]
-                for i in buy:
-                    print(i[0])
-                print('sell prices')
-                sell = info["sell"]
-                for i in sell:
-                    print(i[0])
+                # print('bid prices')
+                # buy = info["buy"]
+                # for i in buy:
+                #     print(i[0])
+                # print('sell prices')
+                # sell = info["sell"]
+                # for i in sell:
+                #     print(i[0])
         elif type == "ack":
-            print('order successful')
+            print('order successful -------------')
         elif type == "reject":
             print('order failed')
 
