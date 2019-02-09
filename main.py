@@ -191,10 +191,10 @@ def trade_bond(exchange):
 def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
     #should decide which algorithms to call
     #has access to arrays in main.py global
-    print('master')
+    print(pnl)
 
     if pnl < -10000:
-        return
+        return None
 
     #check if buying ETF or its constituents is a good idea
     #NEED TO IMMEDIATELY convert and sell so we don't have to keep track of price at which we bought it
