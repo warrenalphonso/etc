@@ -208,7 +208,7 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
         etf_strat = checkETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p)
         if etf_strat == "buyxlf":
             write_to_exchange(exchange, new_buy_order('XLF', XLF_p + 1, 20)[1]) #we need to think about how sell order works do i need to store the id??
-            write_to_exchange(exchange, new_convert_order('XLF', 'SELL', xlf_own // 10)[1])
+            write_to_exchange(exchange, new_convert_order('XLF', 'SELL', xlf_own - (xlf_own % 10))[1])
             write_to_exchange(exchange, new_sell_order('BOND', BOND_p - 1, bond_own)[1])
             write_to_exchange(exchange, new_sell_order('GS', GS_p - 1, gs_own)[1])
             write_to_exchange(exchange, new_sell_order('MS', MS_p - 1, ms_own)[1])
