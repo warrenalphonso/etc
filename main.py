@@ -80,7 +80,7 @@ def get_info(exchange):
     global bond_own, pnl, valbz_own, vale_own, gs_own, ms_own, wfc_own, xlf_own
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 1000:
+    while count < 100:
         info = read_from_exchange(exchange)
         type = info["type"]
         if type == "trade":
