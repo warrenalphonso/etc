@@ -95,9 +95,9 @@ def get_info(exchange):
                 #     print(i[0])
         elif type == "ack":
             print('order successful -------------')
-            order_id = info["order_id"]
-            if order_id in bond_buy_orders:
-                bond_own += 10
+
+        elif type == 'fill':
+            
 
         elif type == "reject":
             print(info["error"])
@@ -113,11 +113,12 @@ def get_info(exchange):
 
 
 def trade_bond(exchange):
-
+    global buy_own
     order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
     bond_buy_orders.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     print(bond_buy_orders)
+    print(buy_own)
     if bond_own > 0:
         order_id, cur_sell_order = new_sell_order('BOND', 1000, 10)
         bond_sell_orders.append(order_id)
