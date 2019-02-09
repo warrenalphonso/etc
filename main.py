@@ -107,11 +107,15 @@ def get_info(exchange):
         count += 1
 
 
+
 def trade_bond(exchange):
+
     order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
     bond_buy.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     write_to_exchange(exchange, new_sell_order('BOND', 1000, 10)[1])
+    
+
 
 
 
