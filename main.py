@@ -177,11 +177,11 @@ def get_info(exchange):
 
 def trade_bond(exchange):
     global bond_own
-    order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
+    order_id, cur_buy_order = new_buy_order('BOND', 995, 10)
     bond_buy_orders.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
-    print(bond_buy_orders)
-    print(bond_own)
+    # print(bond_buy_orders)
+    # print(bond_own)
     if bond_own > 0:
         order_id, cur_sell_order = new_sell_order('BOND', 1000, 10)
         bond_sell_orders.append(order_id)
@@ -192,11 +192,11 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
     #should decide which algorithms to call
     #has access to arrays in main.py global
     print(pnl)
-    trade_bond(exchange)
     if pnl < -10000:
         return None
 
     else:
+        trade_bond(exchange)
         #check if buying ETF or its constituents is a good idea
         #NEED TO IMMEDIATELY convert and sell so we don't have to keep track of price at which we bought it
         if XLF and WFC and MS and GS and BOND:
