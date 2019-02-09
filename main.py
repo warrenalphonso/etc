@@ -96,8 +96,7 @@ def get_info(exchange):
             print('order successful -------------')
             bond.append(info["order_id"])
         elif type == "reject":
-            print('order failed')
-            print('Length of array of bonds: ', len(bond))
+            print('Failed! Length of array of bonds: ', len(bond))
 
         count += 1
 
