@@ -103,7 +103,7 @@ def get_info(exchange):
 
 def trade_bond(exchange):
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
-    write_to_exchange(exchange, new_buy_order('BOND', 1001, 10))
+    write_to_exchange(exchange, new_buy_order('BOND', 1000, 10))
 
 
 
