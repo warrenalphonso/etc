@@ -96,7 +96,7 @@ def get_info(exchange):
             print('order successful -------------')
             order_id = info["order_id"]
             if order_id in bond_buy:
-                bond_buy.remove(order_id)
+                bond_own.remove(order_id)
 
         elif type == "reject":
             print(info["error"])
@@ -108,10 +108,10 @@ def get_info(exchange):
 
 
 def trade_bond(exchange):
-    bond_buy.append(cur_order_id)
-    print(bond_buy)
-    write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
-    write_to_exchange(exchange, new_sell_order('BOND', 1000, 10))
+    order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
+    bond_buy.append(order_id)
+    write_to_exchange(exchange, cur_buy_order)
+    write_to_exchange(exchange, new_sell_order('BOND', 1000, 10)[1])
 
 
 
@@ -128,6 +128,8 @@ wfc = []
 xlf = [] #.3 bond; .2 gs; .2 ms; .2 wfc  ;  100 per conversion
 
 bond_buy = []
+bond_sell = []
+bond_own = 0
 
 def main():
     exchange = connect()
