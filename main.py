@@ -75,13 +75,34 @@ def read_from_exchange(exchange):
 # ~~~~~============== SERVER INFO ==============~~~~~
 def get_info(exchange):
     global server_status
-    info = read_from_exchange(exchange)
+    count = 0 #how long i should process the info
     print('Received info from server')
+    while count < 1000:
+        info = read_from_exchange(exchange)
+        type = info["type"]
+        if type == "book":
+            symbol = info["symbol"]
+            if symbol == "BOND":
+
+
+def trade_bond(exchange):
+    write_to_exchange(exchange, {"type": "add", "order_id":
+
+    })
+
+
 
 
 
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
+bond = [] #fair value of 1000
+valbz = []
+vale = [] #ADR of valbz; 10 per conversion
+gs = []
+ms = []
+wfc = []
+xlf = [] #.3 bond; .2 gs; .2 ms; .2 wfc  ;  100 per conversion
 
 def main():
     exchange = connect()
