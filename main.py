@@ -227,6 +227,7 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
 
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
+##THESE ARE ALL FILLED WITH TRADE VALUES
 bond = [] #fair value of 1000
 valbz = []
 vale = [] #ADR of valbz; 10 per conversion
