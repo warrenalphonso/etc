@@ -24,7 +24,7 @@ test_mode = False
 # 0 is prod-like
 # 1 is slower
 # 2 is empty
-test_exchange_index=0
+test_exchange_index = 0
 prod_exchange_hostname="production"
 server_status = 0 #0 means it's disconnected
 
