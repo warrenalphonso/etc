@@ -177,9 +177,8 @@ def get_info(exchange):
                 bond_sell_orders.remove(order_id)
             print('Failed! Length of array of bonds: ', len(bond_buy_orders))
         # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
-        print("PNL:", pnl)
         count += 1
-
+    print("PNL:", pnl)
 
 
 def trade_bond(exchange):
@@ -269,7 +268,7 @@ def main():
         get_info(exchange)
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
-            master_trade(exchange)
+            master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
         else:
             print('Need to reconnect because market probably restarted')
             reconnect()
