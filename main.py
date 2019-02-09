@@ -106,7 +106,7 @@ def get_info(exchange):
                 bond_buy_orders.remove(order_id)
             except:
                 bond_sell_orders.remove(order_id)
-            print('Failed! Length of array of bonds: ', len(bond_buy))
+            print('Failed! Length of array of bonds: ', len(bond_buy_orders))
 
         count += 1
 
