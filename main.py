@@ -78,7 +78,7 @@ def get_info(exchange):
     global server_status
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 1000:
+    while count < 10:
         info = read_from_exchange(exchange)
         type = info["type"]
         if type == "book":
