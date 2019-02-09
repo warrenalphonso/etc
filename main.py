@@ -104,6 +104,7 @@ def get_info(exchange):
 
 def trade_bond(exchange):
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
+    
     write_to_exchange(exchange, new_buy_order('BOND', 1000, 10))
 
 
@@ -119,6 +120,9 @@ gs = []
 ms = []
 wfc = []
 xlf = [] #.3 bond; .2 gs; .2 ms; .2 wfc  ;  100 per conversion
+
+bond_buy = []
+bond_sell = []
 
 def main():
     exchange = connect()
