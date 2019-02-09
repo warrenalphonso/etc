@@ -10,6 +10,7 @@ from __future__ import print_function
 import sys
 import socket
 import json
+import time
 
 # ~~~~~============== CONFIGURATION  ==============~~~~~
 # replace REPLACEME with your team name!
@@ -41,8 +42,20 @@ def connect():
     server_status = 1
     return s.makefile('rw', 1)
 
-# def reconnect(exchange):
-    
+def reconnect():
+    global server_status
+    while server_status == 0:
+        print('Attempting to reconnect...')
+        try:
+            exchange = connect()
+            write_to_exchange(exchange, {"type": "hello", "team": team_name.upper()})
+            hello_from_exchange = read_from_exchange(exchange)
+            print('Reconnect message: ', hello_from_exchange)
+            if hello_from_exchange[]
+
+
+
+
 
 def write_to_exchange(exchange, obj):
     json.dump(obj, exchange)
@@ -50,6 +63,15 @@ def write_to_exchange(exchange, obj):
 
 def read_from_exchange(exchange):
     return json.loads(exchange.readline())
+
+
+# ~~~~~============== SERVER INFO ==============~~~~~
+def get_info(exchange):
+    global server_status
+    info = read_from_exchange(exchange)
+    print('Received info from server')
+
+
 
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
@@ -64,6 +86,13 @@ def main():
     # Since many write messages generate marketdata, this will cause an
     # exponential explosion in pending messages. Please, don't do that!
     print("The exchange replied:", hello_from_exchange, file=sys.stderr)
+
+    while True:
+        get_info(exchange)
+        if server_status == 1:
+            print('stuff to do when everythings working after we get info')
+        else:
+            print('Need to reconnect because market probably restarted')
 
 
 
