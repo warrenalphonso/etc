@@ -94,7 +94,12 @@ def get_info(exchange):
                 #     print(i[0])
         elif type == "ack":
             print('order successful -------------')
-            bond.append(info["order_id"])
+            order_id = info["order_id"]
+            if order_id in bond_buy:
+                bond_buy.remove(order_id)
+            else:
+                bond.append(info["order_id"])
+
         elif type == "reject":
             print(info["error"])
             print('Failed! Length of array of bonds: ', len(bond))
@@ -103,13 +108,9 @@ def get_info(exchange):
 
 
 def trade_bond(exchange):
+    bond_buy.append(cur_order_id)
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
-<<<<<<< HEAD
-    
-    write_to_exchange(exchange, new_buy_order('BOND', 1000, 10))
-=======
     write_to_exchange(exchange, new_sell_order('BOND', 1000, 10))
->>>>>>> ddb471e4a19bdcf0ada504f621a7bf5145c6275a
 
 
 
@@ -126,7 +127,6 @@ wfc = []
 xlf = [] #.3 bond; .2 gs; .2 ms; .2 wfc  ;  100 per conversion
 
 bond_buy = []
-bond_sell = []
 
 def main():
     exchange = connect()
