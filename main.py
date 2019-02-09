@@ -83,7 +83,7 @@ def get_info(exchange):
         type = info["type"]
         if type == "book":
             symbol = info["symbol"]
-            if symbol == "BOND":
+            # if symbol == "BOND":
                 # print('bid prices')
                 # buy = info["buy"]
                 # for i in buy:
