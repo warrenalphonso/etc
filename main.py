@@ -86,7 +86,7 @@ def get_info(exchange):
         if type == "close":
             server_status = 0
             print('Server closed')
-            return 
+            return
         if type == "trade":
             symbol = info["symbol"]
             if symbol == "BOND":
@@ -110,18 +110,6 @@ def get_info(exchange):
             elif symbol == "XLF":
                 price = info["price"]
                 xlf.extend([price for i in range(info["size"])])
-
-
-
-            # if symbol == "BOND":
-                # print('bid prices')
-                # buy = info["buy"]
-                # for i in buy:
-                #     print(i[0])
-                # print('sell prices')
-                # sell = info["sell"]
-                # for i in sell:
-                #     print(i[0])
         elif type == "ack":
             print('order successful -------------')
 
