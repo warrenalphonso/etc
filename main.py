@@ -31,6 +31,7 @@ port=25000 + (test_exchange_index if test_mode else 0)
 exchange_hostname = "test-exch-" + team_name if test_mode else prod_exchange_hostname
 
 # ~~~~~============== NETWORKING CODE ==============~~~~~
+#connect to server
 def connect():
     global server_status
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -39,6 +40,9 @@ def connect():
     print('Connection secured. ')
     server_status = 1
     return s.makefile('rw', 1)
+
+# def reconnect(exchange):
+    
 
 def write_to_exchange(exchange, obj):
     json.dump(obj, exchange)
@@ -52,6 +56,7 @@ def read_from_exchange(exchange):
 
 def main():
     exchange = connect()
+    print('Initialize successful')
     write_to_exchange(exchange, {"type": "hello", "team": team_name.upper()})
     hello_from_exchange = read_from_exchange(exchange)
     # A common mistake people make is to call write_to_exchange() > 1
@@ -59,6 +64,9 @@ def main():
     # Since many write messages generate marketdata, this will cause an
     # exponential explosion in pending messages. Please, don't do that!
     print("The exchange replied:", hello_from_exchange, file=sys.stderr)
+
+
+
 
 if __name__ == "__main__":
     main()
