@@ -83,6 +83,10 @@ def get_info(exchange):
     while count < 100:
         info = read_from_exchange(exchange)
         type = info["type"]
+        if type == "close":
+            server_status = 0
+            print('Server closed')
+            return 
         if type == "trade":
             symbol = info["symbol"]
             if symbol == "BOND":
