@@ -227,7 +227,8 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
                 print('dont do etf')
 
             #check if selling ETF or its constituents
-
+        else:
+            print('One of the arrays is empty so can\'t implement ETF')
 
 
 
