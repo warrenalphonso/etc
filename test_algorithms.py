@@ -12,7 +12,7 @@ def checkETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p):
     xlf_minus_sum = XLF_p - (.3 * BOND_p + .2 * GS_p + .3 * MS_p + .2 * WFC_p)
     if xlf_minus_sum > 20:
         return "buysum"
-    elif xlf_minus_sum < 15:
+    elif xlf_minus_sum < -15:
         return "buyxlf"
     else:
         return "buynone"

@@ -207,7 +207,6 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
         WFC_p = mean(WFC)
         etf_strat = checkETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p)
         if etf_strat == "buyxlf":
-            print(etf_strat)
             write_to_exchange(exchange, new_buy_order('XLF', XLF_p + 1, 20)[1]) #we need to think about how sell order works do i need to store the id??
             write_to_exchange(exchange, new_convert_order('XLF', 'SELL', xlf_own // 10)[1])
             write_to_exchange(exchange, new_sell_order('BOND', BOND_p - 1, bond_own)[1])
@@ -215,7 +214,6 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
             write_to_exchange(exchange, new_sell_order('MS', MS_p - 1, ms_own)[1])
             write_to_exchange(exchange, new_sell_order('WFC', WFC_p - 1, wfc_own)[1])
         elif etf_strat == "buysum":
-            print(etf_strat)
             write_to_exchange(exchange, new_buy_order('BOND', BOND_p + 1, 6)[1])
             write_to_exchange(exchange, new_buy_order('GS', GS_p + 1, 4)[1])
             write_to_exchange(exchange, new_buy_order('MS', MS_p + 1, 6)[1])
