@@ -16,5 +16,3 @@ def checkETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p):
         return "buysum"
     else:
         return "buynone"
-
-def ETFArbitrage(exchange, XLF_p, BOND_p, GS_p, MS_p, WFC_p):
