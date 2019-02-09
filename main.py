@@ -170,13 +170,7 @@ def get_info(exchange):
                     pnl += info["size"] * info["price"]
         elif type == "reject":
             print(info["error"])
-            order_id = info['order_id']
-            try:
-                bond_buy_orders.remove(order_id)
-            except:
-                bond_sell_orders.remove(order_id)
-            print('Failed! Length of array of bonds: ', len(bond_buy_orders))
-        # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
+            # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
         count += 1
     print("PNL:", pnl)
 
@@ -222,7 +216,7 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
         num_XLF_to_buy = min(bond_own / .3, gs_own / .2, ms_own / .3, wfc_own / .2) // 1
         write_to_exchange(exchange, new_convert_order('XLF', 'BUY', num_XLF_to_buy)[1])
 
-    elif etf+strat == "buynone":
+    elif etf_strat == "buynone":
         print('dont do etf')
 
     #check if selling ETF or its constituents
