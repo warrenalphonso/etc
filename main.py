@@ -18,7 +18,7 @@ from utils import *
 team_name="VW"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
-test_mode = True
+test_mode = False
 
 # This setting changes which test exchange is connected to.
 # 0 is prod-like
@@ -78,24 +78,26 @@ def get_info(exchange):
     global server_status
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 1000:
+    while count < 10:
         info = read_from_exchange(exchange)
         type = info["type"]
         if type == "book":
             symbol = info["symbol"]
             if symbol == "BOND":
-                print('bid prices')
-                buy = info["buy"]
-                for i in buy:
-                    print(i[0])
-                print('sell prices')
-                sell = info["sell"]
-                for i in sell:
-                    print(i[0])
+                # print('bid prices')
+                # buy = info["buy"]
+                # for i in buy:
+                #     print(i[0])
+                # print('sell prices')
+                # sell = info["sell"]
+                # for i in sell:
+                #     print(i[0])
         elif type == "ack":
-            print('order successful')
+            print('order successful -------------')
         elif type == "reject":
             print('order failed')
+
+        count += 1
 
 
 def trade_bond(exchange):
