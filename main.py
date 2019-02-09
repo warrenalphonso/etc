@@ -22,16 +22,22 @@ test_mode = True
 # 0 is prod-like
 # 1 is slower
 # 2 is empty
-test_exchange_index=2
+test_exchange_index=0
 prod_exchange_hostname="production"
+server_status = 0 #0 means it's disconnected
 
+# the JSON ports are 25000, 25001 and 25002.
 port=25000 + (test_exchange_index if test_mode else 0)
 exchange_hostname = "test-exch-" + team_name if test_mode else prod_exchange_hostname
 
 # ~~~~~============== NETWORKING CODE ==============~~~~~
 def connect():
+    global server_status
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print('Starting connection... ')
     s.connect((exchange_hostname, port))
+    print('Connection secured. ')
+    server_status = 1
     return s.makefile('rw', 1)
 
 def write_to_exchange(exchange, obj):
