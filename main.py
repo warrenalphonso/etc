@@ -183,12 +183,12 @@ def get_info(exchange):
 
 
 def trade_bond(exchange):
-    global buy_own
+    global bond_own
     order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
     bond_buy_orders.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     print(bond_buy_orders)
-    print(buy_own)
+    print(bond_own)
     if bond_own > 0:
         order_id, cur_sell_order = new_sell_order('BOND', 1000, 10)
         bond_sell_orders.append(order_id)
