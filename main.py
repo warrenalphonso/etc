@@ -117,6 +117,7 @@ def trade_bond(exchange):
     order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
     bond_buy_orders.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
+    print(bond_buy_orders)
     if bond_own > 0:
         write_to_exchange(exchange, new_sell_order('BOND', 1000, 10)[1])
 
