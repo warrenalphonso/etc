@@ -14,7 +14,7 @@ import time
 
 # ~~~~~============== CONFIGURATION  ==============~~~~~
 # replace REPLACEME with your team name!
-team_name="VM"
+team_name="VW"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
 test_mode = True
@@ -51,7 +51,14 @@ def reconnect():
             write_to_exchange(exchange, {"type": "hello", "team": team_name.upper()})
             hello_from_exchange = read_from_exchange(exchange)
             print('Reconnect message: ', hello_from_exchange)
-            if hello_from_exchange[]
+            if hello_from_exchange["type"] == "hello":
+                server_status = 1
+                print('Reconnect successful!!!!!!')
+            else:
+                print('Error reconnecting ')
+        except:
+            print('Error... trying again in .1 seconds')
+            time.sleep(0.1)
 
 
 
@@ -93,6 +100,7 @@ def main():
             print('stuff to do when everythings working after we get info')
         else:
             print('Need to reconnect because market probably restarted')
+            reconnect()
 
 
 
