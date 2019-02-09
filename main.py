@@ -77,7 +77,7 @@ def read_from_exchange(exchange):
 # ~~~~~============== SERVER INFO ==============~~~~~
 def get_info(exchange):
     global server_status
-    global bond_own
+    global bond_own, pnl, valbz_own, vale_own, gs_own, ms_own, wfc_own, xlf_own
     count = 0 #how long i should process the info
     print('Received info from server')
     while count < 100:
@@ -176,8 +176,8 @@ def get_info(exchange):
             except:
                 bond_sell_orders.remove(order_id)
             print('Failed! Length of array of bonds: ', len(bond_buy_orders))
-        elif type == "out":
-            #this only gives us id so maybe just remove stocks from own lists when we call cancel???
+        # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
+        print("PNL: " + pnl)
         count += 1
 
 
