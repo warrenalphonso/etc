@@ -177,7 +177,7 @@ def get_info(exchange):
                 bond_sell_orders.remove(order_id)
             print('Failed! Length of array of bonds: ', len(bond_buy_orders))
         # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
-        print("PNL: " + pnl)
+        print("PNL:", pnl)
         count += 1
 
 
