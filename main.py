@@ -196,7 +196,7 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
     #check if buying ETF or its constituents is a good idea
     #NEED TO IMMEDIATELY convert and sell so we don't have to keep track of price at which we bought it
     if XLF and WFC and MS and GS and BOND:
-        
+
         XLF_p = mean(XLF)
         BOND_p = mean(BOND)
         GS_p = mean(GS)
