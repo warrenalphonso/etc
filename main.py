@@ -104,8 +104,12 @@ def get_info(exchange):
 
 def trade_bond(exchange):
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
+<<<<<<< HEAD
     
     write_to_exchange(exchange, new_buy_order('BOND', 1000, 10))
+=======
+    write_to_exchange(exchange, new_sell_order('BOND', 1000, 10))
+>>>>>>> ddb471e4a19bdcf0ada504f621a7bf5145c6275a
 
 
 
