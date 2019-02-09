@@ -97,6 +97,8 @@ def get_info(exchange):
         elif type == "reject":
             print('order failed')
 
+        count += 1
+
 
 def trade_bond(exchange):
     write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
