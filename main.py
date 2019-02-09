@@ -84,12 +84,16 @@ def get_info(exchange):
         if type == "book":
             symbol = info["symbol"]
             if symbol == "BOND":
+                print('stuff')
+        elif type == "ack":
+            print('order successful')
+        elif type == "reject":
+            print('order failed')
 
 
 def trade_bond(exchange):
-    write_to_exchange(exchange, {"type": "add", "order_id":
-
-    })
+    write_to_exchange(exchange, new_buy_order('BOND', 999, 10))
+    write_to_exchange(exchange, new_buy_order('BOND', 1001, 10))
 
 
 
@@ -120,6 +124,7 @@ def main():
         get_info(exchange)
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
+            trade_bond(exchange)
         else:
             print('Need to reconnect because market probably restarted')
             reconnect()
