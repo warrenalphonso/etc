@@ -192,7 +192,7 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
     #should decide which algorithms to call
     #has access to arrays in main.py global
     print(pnl)
-
+    trade_bond(exchange)
     if pnl < -10000:
         return None
 
