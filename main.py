@@ -177,7 +177,7 @@ def get_info(exchange):
 
 def trade_bond(exchange):
     global bond_own
-    order_id, cur_buy_order = new_buy_order('BOND', 995, 10)
+    order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
     bond_buy_orders.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     # print(bond_buy_orders)
@@ -269,7 +269,8 @@ def main():
         get_info(exchange)
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
-            master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
+            # master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
+            trade_bond(exchange)
         else:
             print('Need to reconnect because market probably restarted')
             reconnect()
