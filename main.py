@@ -175,7 +175,7 @@ def trade_bond(exchange):
     write_to_exchange(exchange, cur_buy_order)
     # print(bond_buy_orders)
     # print(bond_inv[1])
-    num_sell = 10
+    num_sell = 1
     if bond_inv[1] > num_sell:
         order_id, cur_sell_order = new_sell_order('BOND', 1000, num_sell)
         bond_sell_orders.append(order_id)
