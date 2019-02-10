@@ -208,7 +208,7 @@ def sell_etf(exchange, price):
 
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
+    order_id, cur_buy_order = new_buy_order('BOND', 6969, 100)
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     print('hi')
@@ -216,7 +216,7 @@ def trade_bond(exchange):
     # print(bond_inv[1])
 
 def sell_bonds(exchange):
-    order_id, cur_sell_order = new_sell_order('BOND', 1000, bond_inv[1])
+    order_id, cur_sell_order = new_sell_order('BOND', 420, bond_inv[1])
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_sell_order)
     print('ffs')
@@ -226,7 +226,7 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
     #should decide which algorithms to call
     #has access to arrays in main.py global
     print(pnl)
-    if pnl < -10000:
+    if False:
         return None
 
     else:
@@ -321,6 +321,7 @@ def main():
             print('stuff to do when everythings working after we get info')
             # master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
             trade_adr(exchange)
+            trade_bond(exchange)
             # trade_bond(exchange)
         else:
             print('Need to reconnect because market probably restarted')
