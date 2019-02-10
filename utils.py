@@ -27,3 +27,4 @@ def new_convert_order(stock, dir, num_bought):
 def update_inv(cur_inv, new_price, new_amount):
     total_price = cur_inv[0] * cur_inv[1] + new_price * new_amount + 0.0
     return [total_price / (new_amount + cur_inv[1]), new_amount + cur_inv[1]]
+
