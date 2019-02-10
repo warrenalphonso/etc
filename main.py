@@ -77,7 +77,7 @@ def read_from_exchange(exchange):
 # ~~~~~============== SERVER INFO ==============~~~~~
 def get_info(exchange):
     global server_status
-    global bond_own, pnl, valbz_own, vale_own, gs_own, ms_own, wfc_own, xlf_own
+    global bond_inv, pnl, valbz_inv, vale_inv, gs_inv, ms_inv, wfc_inv, xlf_inv
     count = 0 #how long i should process the info
     print('Received info from server')
     while count < 100:
@@ -118,64 +118,64 @@ def get_info(exchange):
             dir = info["dir"]
             if dir == "BUY":
                 if symbol == "BOND":
-                    bond_own += info["size"]
+                    bond_inv = update_inv(bond_inv, info["price"], info["size"])
                     pnl -= info["size"] * info["price"]
                 elif symbol == "VALBZ":
-                    valbz_own += info["size"]
+                    valbz_inv = update_inv(valbz_inv, info["price"], info["size"])
                     pnl -= info["size"] * info["price"]
                 elif symbol == "VALE":
-                    vale_own += info["size"]
+                    vale_inv = update_inv(vale_inv, info["price"], info['size'])
                     pnl -= info["size"] * info["price"]
                 elif symbol == "GS":
-                    gs_own += info["size"]
+                    gs_inv = update_inv(gs_inv, info['price'], info['size'])
                     pnl -= info["size"] * info["price"]
                 elif symbol == "MS":
-                    ms_own += info["size"]
+                    ms_inv = update_inv(ms_inv, info['price'], info['size'])
                     pnl -= info["size"] * info["price"]
                 elif symbol == "WFC":
-                    wfc_own += info["size"]
+                    wfc_inv = update_inv(wfc_inv, info['price'], info['size'])
                     pnl -= info["size"] * info["price"]
                 elif symbol == "XLF":
-                    xlf_own += info["size"]
+                    xlf_inv = update_inv(xlf_inv, info['price'], info['size'])
                     pnl -= info["size"] * info["price"]
             else:
                 if symbol == "BOND":
-                    bond_own -= info["size"]
+                    bond_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
                 elif symbol == "VALBZ":
-                    valbz_own -= info["size"]
+                    valbz_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
                 elif symbol == "VALE":
-                    vale_own -= info["size"]
+                    vale_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
                 elif symbol == "GS":
-                    gs_own -= info["size"]
+                    gs_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
                 elif symbol == "MS":
-                    ms_own -= info["size"]
+                    ms_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
                 elif symbol == "WFC":
-                    wfc_own -= info["size"]
+                    wfc_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
                 elif symbol == "XLF":
-                    xlf_own -= info["size"]
+                    xlf_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
         # elif type == "reject":
             # print(info["error"])
             # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
         count += 1
     print("PNL:", pnl)
-    print("Num Bonds:", bond_own)
+    print("Num Bonds:", bond_inv[1])
 
 
 def trade_bond(exchange):
-    global bond_own
+    global bond_inv[1]
     order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
     bond_buy_orders.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     # print(bond_buy_orders)
-    # print(bond_own)
-    if bond_own > 0:
+    # print(bond_inv[1])
+    if bond_inv[1] > 0:
         order_id, cur_sell_order = new_sell_order('BOND', 1000, 10)
         bond_sell_orders.append(order_id)
         write_to_exchange(exchange, cur_sell_order)
@@ -202,19 +202,19 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
             etf_strat = check_buy_ETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p)
             if etf_strat == "buyxlf":
                 write_to_exchange(exchange, new_buy_order('XLF', XLF_p + 1, 20)[1]) #we need to think about how sell order works do i need to store the id??
-                # write_to_exchange(exchange, new_convert_order('XLF', 'SELL', xlf_own - (xlf_own % 10))[1])
-                # write_to_exchange(exchange, new_sell_order('BOND', BOND_p - 1, bond_own)[1])
-                # write_to_exchange(exchange, new_sell_order('GS', GS_p - 1, gs_own)[1])
-                # write_to_exchange(exchange, new_sell_order('MS', MS_p - 1, ms_own)[1])
-                # write_to_exchange(exchange, new_sell_order('WFC', WFC_p - 1, wfc_own)[1])
+                # write_to_exchange(exchange, new_convert_order('XLF', 'SELL', xlf_inv[1] - (xlf_inv[1] % 10))[1])
+                # write_to_exchange(exchange, new_sell_order('BOND', BOND_p - 1, bond_inv[1])[1])
+                # write_to_exchange(exchange, new_sell_order('GS', GS_p - 1, gs_inv[1])[1])
+                # write_to_exchange(exchange, new_sell_order('MS', MS_p - 1, ms_inv[1])[1])
+                # write_to_exchange(exchange, new_sell_order('WFC', WFC_p - 1, wfc_inv[1])[1])
             elif etf_strat == "buysum":
                 write_to_exchange(exchange, new_buy_order('BOND', BOND_p + 1, 6)[1])
                 write_to_exchange(exchange, new_buy_order('GS', GS_p + 1, 4)[1])
                 write_to_exchange(exchange, new_buy_order('MS', MS_p + 1, 6)[1])
                 write_to_exchange(exchange, new_buy_order('WFC', WFC_p + 1, 4)[1])
-                num_XLF_to_buy = min(bond_own / .3, gs_own / .2, ms_own / .3, wfc_own / .2) // 1
+                num_XLF_to_buy = min(bond_inv[1] / .3, gs_inv[1] / .2, ms_inv[1] / .3, wfc_inv[1] / .2) // 1
                 # write_to_exchange(exchange, new_convert_order('XLF', 'BUY', num_XLF_to_buy)[1])
-                # write_to_exchange(exchange, new_sell_order('XLF', XLF_p - 1, xlf_own)[1])
+                # write_to_exchange(exchange, new_sell_order('XLF', XLF_p - 1, xlf_inv[1])[1])
             elif etf_strat == "buynone":
                 print('dont do etf')
 
@@ -238,13 +238,14 @@ xlf = [] #.3 bond; .2 gs; .2 ms; .2 wfc  ;  100 per conversion
 
 bond_buy_orders = []
 bond_sell_orders = []
-bond_own = 0
-valbz_own = 0
-vale_own = 0
-gs_own = 0
-ms_own = 0
-wfc_own = 0
-xlf_own = 0
+# [price, amount] for each symbol
+bond_inv = [0, 0]
+valbz_inv = [0, 0]
+vale_inv = [0, 0]
+gs_inv = [0, 0]
+ms_inv = [0, 0]
+wfc_inv = [0, 0]
+xlf_inv = [0, 0]
 
 pnl = 0
 

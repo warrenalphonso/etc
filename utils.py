@@ -22,3 +22,8 @@ def new_convert_order(stock, dir, num_bought):
     order_dict = {'type': 'convert', 'order_id': cur_order_id, 'symbol': stock, 'dir': dir,
                     'size': num_bought}
     return cur_order_id, order_dict
+
+
+def update_inv(cur_inv, new_price, new_amount):
+    total_price = cur_inv[0] * cur_inv[1] + new_price * new_amount + 0.0
+    return [total_price / (new_amount + cur_inv[1]), new_amount + cur_inv[1]]
