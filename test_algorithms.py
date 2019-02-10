@@ -17,10 +17,10 @@ def check_buy_ETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p):
     else:
         return "buynone"
 
-def check_convert_ETF(etf_p, etf_inv, sum_p, bond_p, gs_p, ms_p, wfc_p):
-    avg_sum_inv
-    if (etf_p - etf_inv[0] > sum_p - etf_inv[0] - 200):
-        return "selletf"
-    elif (etf_p - etf_inv[0] < sum_p - etf_inv[0] -200):
-        return "convertetf"
-    elif (etf_p - )
+# def check_convert_ETF(etf_p, etf_inv, sum_p, bond_p, gs_p, ms_p, wfc_p):
+#     avg_sum_inv
+#     if (etf_p - etf_inv[0] > sum_p - etf_inv[0] - 200):
+#         return "selletf"
+#     elif (etf_p - etf_inv[0] < sum_p - etf_inv[0] -200):
+#         return "convertetf"
+#     elif (etf_p - )
