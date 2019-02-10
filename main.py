@@ -186,8 +186,6 @@ def trade_bond(exchange):
     print('hi')
     # print(bond_buy_orders)
     # print(bond_inv[1])
-
-def sell_bonds(exchange):
     order_id, cur_sell_order = new_sell_order('BOND', 1002, bond_inv[1])
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_sell_order)
@@ -286,7 +284,6 @@ def main():
     # Since many write messages generate marketdata, this will cause an
     # exponential explosion in pending messages. Please, don't do that!
     print("The exchange replied:", hello_from_exchange, file=sys.stderr)
-    cur = 0
 
     while True:
         get_info(exchange)
@@ -294,11 +291,8 @@ def main():
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
             # master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
-            if cur % 2 == 0:
-                trade_bond(exchange)
-            else:
-                sell_bonds(exchange)
-            cur += 1
+            trade_bond(exchange)
+
         else:
             print('Need to reconnect because market probably restarted')
             reconnect()
