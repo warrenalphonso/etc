@@ -169,7 +169,7 @@ def get_info(exchange):
 
 
 def trade_bond(exchange):
-    global bond_inv[1]
+    global bond_inv
     order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
     bond_buy_orders.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
