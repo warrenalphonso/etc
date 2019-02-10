@@ -19,7 +19,7 @@ from test_algorithms import *
 team_name="VW"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
-test_mode = False
+test_mode = True
 
 # This setting changes which test exchange is connected to.
 # 0 is prod-like
@@ -80,7 +80,7 @@ def get_info(exchange):
     global bond_inv, pnl, valbz_inv, vale_inv, gs_inv, ms_inv, wfc_inv, xlf_inv
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 1500:
+    while count < 1000:
         info = read_from_exchange(exchange)
         type = info["type"]
         if type == "close":
@@ -160,9 +160,10 @@ def get_info(exchange):
                 elif symbol == "XLF":
                     xlf_inv[1] -= info["size"]
                     pnl += info["size"] * info["price"]
-        # elif type == "reject":
-            # print(info["error"])
+        elif type == "reject":
+            print(info["error"])
             # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
+        time.sleep(0.01)
         count += 1
     print("PNL:", pnl)
     print("Num Bonds:", bond_inv[1])
@@ -179,16 +180,18 @@ def sell_etf(exchange, price):
 
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
+    order_id, cur_buy_order = new_buy_order('BOND', 1000, 100)
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
+    print('hi')
     # print(bond_buy_orders)
     # print(bond_inv[1])
 
 def sell_bonds(exchange):
-    order_id, cur_sell_order = new_sell_order('BOND', 1000, bond_inv[1])
+    order_id, cur_sell_order = new_sell_order('BOND', 1002, bond_inv[1])
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_sell_order)
+    print('ffs')
 
 
 def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
