@@ -80,7 +80,7 @@ def get_info(exchange):
     global bond_inv, pnl, valbz_inv, vale_inv, gs_inv, ms_inv, wfc_inv, xlf_inv
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 300:
+    while count < 1000:
         info = read_from_exchange(exchange)
         type = info["type"]
         if type == "close":
@@ -163,6 +163,7 @@ def get_info(exchange):
         # elif type == "reject":
             # print(info["error"])
             # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
+        time.sleep(0.01)
         count += 1
     print("PNL:", pnl)
     print("Num Bonds:", bond_inv[1])
