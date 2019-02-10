@@ -172,9 +172,14 @@ def cancel_all(exchange, current_ids):
     for id in current_ids:
         write_to_exchange(exchange, {"type": "cancel", "order_id": id})
 
+def sell_etf(exchange, price):
+    id, order = new_sell_order('ETF', price, xlf_inv[1])
+    current_ids.append(id)
+    write_to_exchange(exchange, order)
+
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
+    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     # print(bond_buy_orders)
