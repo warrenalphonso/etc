@@ -80,7 +80,7 @@ def get_info(exchange):
     global bond_inv, pnl, valbz_inv, vale_inv, gs_inv, ms_inv, wfc_inv, xlf_inv
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 100:
+    while count < 1500:
         info = read_from_exchange(exchange)
         type = info["type"]
         if type == "close":
@@ -168,18 +168,25 @@ def get_info(exchange):
     print("Num Bonds:", bond_inv[1])
 
 
+def cancel_all(exchange, current_ids):
+    for id in current_ids:
+        write_to_exchange(exchange, {"type": "cancel", "order_id": id})
+
+def sell_etf(exchange, price):
+    id, order = new_sell_order('ETF', price, xlf_inv[1])
+    current_ids.append(id)
+    write_to_exchange(exchange, order)
+
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 999, 10)
-    bond_buy_orders.append(order_id)
+    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
+    current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     # print(bond_buy_orders)
     # print(bond_inv[1])
-    num_sell = 1
-    if bond_inv[1] > num_sell:
-        order_id, cur_sell_order = new_sell_order('BOND', 1000, num_sell)
-        bond_sell_orders.append(order_id)
-        write_to_exchange(exchange, cur_sell_order)
+    order_id, cur_sell_order = new_sell_order('BOND', 1000, bond_inv[1])
+    current_ids.append(order_id)
+    write_to_exchange(exchange, cur_sell_order)
 
 
 def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
@@ -202,17 +209,27 @@ def master_trade(exchange, BOND, VALBZ, VALE, GS, MS, WFC, XLF):
             WFC_p = mean(WFC)
             etf_strat = check_buy_ETF(XLF_p, BOND_p, GS_p, MS_p, WFC_p)
             if etf_strat == "buyxlf":
-                write_to_exchange(exchange, new_buy_order('XLF', XLF_p + 1, 20)[1]) #we need to think about how sell order works do i need to store the id??
+                id, order = new_buy_order('XLF', XLF_p + 1, 20)
+                current_ids.append(id)
+                write_to_exchange(exchange, order) #we need to think about how sell order works do i need to store the id??
                 # write_to_exchange(exchange, new_convert_order('XLF', 'SELL', xlf_inv[1] - (xlf_inv[1] % 10))[1])
                 # write_to_exchange(exchange, new_sell_order('BOND', BOND_p - 1, bond_inv[1])[1])
                 # write_to_exchange(exchange, new_sell_order('GS', GS_p - 1, gs_inv[1])[1])
                 # write_to_exchange(exchange, new_sell_order('MS', MS_p - 1, ms_inv[1])[1])
                 # write_to_exchange(exchange, new_sell_order('WFC', WFC_p - 1, wfc_inv[1])[1])
             elif etf_strat == "buysum":
-                write_to_exchange(exchange, new_buy_order('BOND', BOND_p + 1, 6)[1])
-                write_to_exchange(exchange, new_buy_order('GS', GS_p + 1, 4)[1])
-                write_to_exchange(exchange, new_buy_order('MS', MS_p + 1, 6)[1])
-                write_to_exchange(exchange, new_buy_order('WFC', WFC_p + 1, 4)[1])
+                id, order = new_buy_order('BOND', BOND_p + 1, 6)
+                current_ids.append(id)
+                write_to_exchange(exchange, order)
+                id, order = new_buy_order('GS', GS_p + 1, 4)
+                current_ids.append(id)
+                write_to_exchange(exchange, order)
+                id, order = new_buy_order('MS', MS_p + 1, 6)
+                current_ids.append(id)
+                write_to_exchange(exchange, order)
+                id, order = new_buy_order('WFC', WFC_p + 1, 4)
+                current_ids.append(id)
+                write_to_exchange(exchange, order)
                 num_XLF_to_buy = min(bond_inv[1] / .3, gs_inv[1] / .2, ms_inv[1] / .3, wfc_inv[1] / .2) // 1
                 # write_to_exchange(exchange, new_convert_order('XLF', 'BUY', num_XLF_to_buy)[1])
                 # write_to_exchange(exchange, new_sell_order('XLF', XLF_p - 1, xlf_inv[1])[1])
@@ -239,6 +256,7 @@ xlf = [] #.3 bond; .2 gs; .2 ms; .2 wfc  ;  100 per conversion
 
 bond_buy_orders = []
 bond_sell_orders = []
+current_ids = []
 # [price, amount] for each symbol
 bond_inv = [0, 0]
 valbz_inv = [0, 0]
@@ -263,6 +281,7 @@ def main():
 
     while True:
         get_info(exchange)
+        cancel_all(exchange, current_ids)
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
             # master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
