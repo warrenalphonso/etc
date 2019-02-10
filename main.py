@@ -19,7 +19,7 @@ from test_algorithms import *
 team_name="VW"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
-test_mode = False
+test_mode = True
 
 # This setting changes which test exchange is connected to.
 # 0 is prod-like
@@ -179,7 +179,7 @@ def sell_etf(exchange, price):
 
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
+    order_id, cur_buy_order = new_buy_order('BOND', 1005, 100)
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     print('hi')
@@ -187,7 +187,7 @@ def trade_bond(exchange):
     # print(bond_inv[1])
 
 def sell_bonds(exchange):
-    order_id, cur_sell_order = new_sell_order('BOND', 1000, bond_inv[1])
+    order_id, cur_sell_order = new_sell_order('BOND', 999, bond_inv[1])
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_sell_order)
     print('ffs')
