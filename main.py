@@ -80,7 +80,7 @@ def get_info(exchange):
     global bond_inv, pnl, valbz_inv, vale_inv, gs_inv, ms_inv, wfc_inv, xlf_inv
     count = 0 #how long i should process the info
     print('Received info from server')
-    while count < 5000:
+    while count < 500:
         info = read_from_exchange(exchange)
         type = info["type"]
         if type == "close":
