@@ -159,7 +159,6 @@ def get_info(exchange):
         elif type == "reject":
             print(info["error"])
             # "OUT": this only gives us id so maybe just remove stocks from own lists when we call cancel???
-        time.sleep(0.01)
         count += 1
     print("PNL:", pnl)
     print("Num Bonds:", bond_inv[1])
@@ -209,7 +208,7 @@ def sell_etf(exchange, price):
 
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 1000, 100)
+    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     print('hi')
@@ -217,7 +216,7 @@ def trade_bond(exchange):
     # print(bond_inv[1])
 
 def sell_bonds(exchange):
-    order_id, cur_sell_order = new_sell_order('BOND', 1002, bond_inv[1])
+    order_id, cur_sell_order = new_sell_order('BOND', 1000, bond_inv[1])
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_sell_order)
     print('ffs')
@@ -318,7 +317,6 @@ def main():
 
     while True:
         get_info(exchange)
-        cancel_all(exchange, current_ids)
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
             # master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
