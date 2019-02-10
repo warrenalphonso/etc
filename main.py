@@ -62,10 +62,6 @@ def reconnect():
             print('Error... trying again in .1 seconds')
             time.sleep(0.1)
 
-
-
-
-
 def write_to_exchange(exchange, obj):
     json.dump(obj, exchange)
     exchange.write("\n")
@@ -168,6 +164,39 @@ def get_info(exchange):
     print("PNL:", pnl)
     print("Num Bonds:", bond_inv[1])
 
+def trade_adr(exchange):
+    global valbz_inv, vale_inv
+    if len(valbz) > 25 and len(vale) > 25:
+        valbz_p = mean(valbz)
+        vale_p = mean(vale)
+        if vale_p > valbz_p + 10:
+            order_id, order = new_buy_order('VALBZ', valbz_p + 1, 10)
+            write_to_exchange(exchange, order)
+            order_id, order = new_convert_order('VALE', 'BUY', valbz_inv[1])
+            write_to_exchange(exchange, order)
+            order_id, order = new_sell_order('VALE', vale_p - 1, vale_inv[1])
+            write_to_exchange(exchange, order)
+        elif vale_p < valbz_p + 10:
+            order_id, order = new_buy_order('VALE', vale_p + 1, 10)
+            write_to_exchange(exchange, order)
+            order_id, order = new_convert_order('VALE', 'SELL', vale_inv[1])
+            write_to_exchange(exchange, order)
+            order_id, order = new_sell_order('VALBZ', valbz_p - 1, valbz_inv[1])
+            write_to_exchange(exchange, order)
+    else:
+        return
+
+
+
+
+
+
+
+
+
+
+
+
 
 def cancel_all(exchange, current_ids):
     for id in current_ids:
@@ -180,13 +209,15 @@ def sell_etf(exchange, price):
 
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
+    order_id, cur_buy_order = new_buy_order('BOND', 1000, 100)
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     print('hi')
     # print(bond_buy_orders)
     # print(bond_inv[1])
-    order_id, cur_sell_order = new_sell_order('BOND', 1000, bond_inv[1])
+
+def sell_bonds(exchange):
+    order_id, cur_sell_order = new_sell_order('BOND', 1002, bond_inv[1])
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_sell_order)
     print('ffs')
@@ -291,8 +322,8 @@ def main():
         if server_status == 1:
             print('stuff to do when everythings working after we get info')
             # master_trade(exchange, bond, valbz, vale, gs, ms, wfc, xlf)
-            trade_bond(exchange)
-
+            trade_adr(exchange)
+            # trade_bond(exchange)
         else:
             print('Need to reconnect because market probably restarted')
             reconnect()
