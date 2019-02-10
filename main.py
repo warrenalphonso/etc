@@ -180,13 +180,13 @@ def sell_etf(exchange, price):
 
 def trade_bond(exchange):
     global bond_inv
-    order_id, cur_buy_order = new_buy_order('BOND', 1000, 100)
+    order_id, cur_buy_order = new_buy_order('BOND', 999, 100)
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_buy_order)
     print('hi')
     # print(bond_buy_orders)
     # print(bond_inv[1])
-    order_id, cur_sell_order = new_sell_order('BOND', 1002, bond_inv[1])
+    order_id, cur_sell_order = new_sell_order('BOND', 1000, bond_inv[1])
     current_ids.append(order_id)
     write_to_exchange(exchange, cur_sell_order)
     print('ffs')
